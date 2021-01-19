@@ -34,8 +34,8 @@ function setup()
     jungleSprite.x=width/2;
     jungleSprite.velocityX=-2;
 
-    floor1=createSprite(displayWidth/2,height,width,10);
-      floor1.visible=false;
+    floor1=createSprite(displayWidth/2,height,displayWidth,10);
+    //  floor1.visible=false;
 
     monkeyPlayer=createSprite(100,height-70,20,50);
     monkeyPlayer.addAnimation("monkey", moneky_running_image);
@@ -44,7 +44,7 @@ function setup()
     foodGroup= new Group();
     obstacleGroup= new Group();
 
-    //score=0;
+    score=0;
 
 
    
@@ -54,27 +54,35 @@ function draw()
 {
   //  background("red");
 
+  spawnFood();
+  stroke("white");
+  textSize(20);
+  fill("black");
+  text("Score: " +score, 100,height-300);
   
-    if(keyDown("SPACE") || touches.length>0 )
+    if(keyDown("SPACE") )
     {
       monkeyPlayer.velocityY=-10;
-      touches= [];
+      //touches= [];
     }
     monkeyPlayer.velocityY=monkeyPlayer.velocityY+2;
     monkeyPlayer.collide(floor1);
   spawnObstacles();
-  spawnFood();
- // background(jungleImage);
-  if(jungleSprite.x<0)
-    {
-      jungleSprite.x=jungleSprite.width/2;
-    }
+ // spawnFood();
+  background(220);
 
-    if(foodGroup.isTouching(monkeyPlayer))
+ if(foodGroup.isTouching(monkeyPlayer))
     {
       score= score+2
       food.remove();
     }
+
+  if(jungleSprite.x<0)
+    {      
+      jungleSprite.x=jungleSprite.width/2;
+    }
+
+    
       console.log(score);
     if(obstacleGroup.isTouching(monkeyPlayer))
     {
@@ -95,20 +103,17 @@ function draw()
         case 40:
             monkeyPlayer.scale=0.26;
             break;
-        default:break;
+        default: break;
     }
     drawSprites();
-    stroke("white");
-    textSize(20);
-    fill("white");
-    text("Score: " +score, width-300,height-70);
+    
 }
 
 function spawnObstacles()
 {
   if(frameCount % 80 === 0)
   {
-    obstacleSprite= createSprite(600, height-95, 20,30);
+    obstacleSprite= createSprite(300, height-95, 20,30);
     obstacleSprite.y= Math.round(random(height,height-20));
     obstacleSprite.addImage(obstacleImage);
     obstacleSprite.scale=0.05;
@@ -123,13 +128,13 @@ function spawnFood()
 {
   if (frameCount % 60 === 0)
   {
-     food=createSprite(600,height-200,20,10);
+     food=createSprite(300 ,height-100,20,10);
      food.y=Math.round(random(height-50,height-100));
     food.addImage(bananaImage);
     food.scale=0.05;
     food.velocityX=-3;
 
-    food.lifetime=200;
+    food.lifetime=100;
     foodGroup.add(food);
   }
 }
